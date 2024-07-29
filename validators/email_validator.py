@@ -9,4 +9,4 @@ def valid_email_filter(message: types.Message) -> dict[str, str] | None:
     except EmailNotValidError:
         return None
 
-    return {"email": email.normalized}
+    return {"email": email.normalized.lower()}
