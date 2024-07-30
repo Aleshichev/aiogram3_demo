@@ -25,7 +25,10 @@ async def cancel_handler(message: types.Message, state: FSMContext) -> None:
     """
     current_state = await state.get_state()
     if current_state is None:
-        await message.reply(text="OK, but nothing was going on.")
+        await message.reply(
+            text="OK, but nothing was going on.", reply_markup=ReplyKeyboardRemove()
+        )
+
         return
 
     await state.clear()
@@ -37,6 +40,8 @@ async def cancel_handler(message: types.Message, state: FSMContext) -> None:
 
 @router.message()
 async def echo_message(message: types.Message):
+    if message.contact or message.location:
+        return
     if message.poll:
         await message.forward(chat_id=message.chat.id)
         return
